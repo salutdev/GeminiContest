@@ -1,0 +1,25 @@
+Please generate programming coding challenge. Do not explain how to solve it.
+Generate 5 test cases.
+Level of the challenge is one of the following: easy, medium, hard.
+Topic is one or more of the following.
+Topics: dynamic programming, binary search, graphs, binary tree, 2 pointers, sliding window,
+recursion, backtracking, dfs, bfs, hashtable, priority queue, arrays, sorting, strings,
+Dijkstra, Belmand-Ford, minimum spanning tree, tries, etc
+
+Please construct response in json format with the following properties:
+
+{
+    "taskTitle": "<Challenge title>",
+    "topics": "<Topic>",
+    "level": "<Level>",
+    "timeComplexity": "<Expected Time Complexity>",
+    "spaceComplexity": "<Expected Space Complexity>",
+    "taskStatement": "<Challenge statement>",
+    "testCases: [
+        "testCase": {
+            "id": <Integer id>,
+            "input": "<Input>",
+            "output": "<Output>"
+        }
+    ]
+}
