@@ -94,63 +94,44 @@ private fun DisplayTestCases(
 ) {
     testCases?.forEach { testCase ->
         Spacer(modifier = Modifier.height(10.dp))
-
         Text("TestCase ${testCase?.id ?: ""}", fontSize = 16.sp)
+        DisplayTestCaseField("Input", testCase?.input, clipboardManager, context)
+        DisplayTestCaseField("Output", testCase?.output, clipboardManager, context)
+    }
+}
 
-        Row(
-            modifier = Modifier.padding(start = 10.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Text("Input: ")
-            BasicText(
-                text = AnnotatedString(testCase?.input ?: ""),
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier
-                    .padding(top = 3.dp)
-                    .clickable {
-                        // Copy text to clipboard
-                        clipboardManager.setText(AnnotatedString(testCase?.input ?: ""))
-                        Toast
-                            .makeText(
-                                context,
-                                "Text copied to clipboard",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
-                    }
-            )
-        }
-
-        Row(
-            modifier = Modifier.padding(start = 10.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Text("Output: ")
-            BasicText(
-                text = AnnotatedString(testCase?.output ?: ""),
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier
-                    .padding(top = 3.dp)
-                    .clickable {
-                        // Copy text to clipboard
-                        clipboardManager.setText(AnnotatedString(testCase?.output ?: ""))
-                        Toast
-                            .makeText(
-                                context,
-                                "Text copied to clipboard",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
-                    }
-            )
-        }
+@Composable
+private fun DisplayTestCaseField(
+    fieldTitle: String,
+    value: String?,
+    clipboardManager: ClipboardManager,
+    context: Context
+) {
+    Row(
+        modifier = Modifier.padding(start = 10.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Text("$fieldTitle: ")
+        BasicText(
+            text = AnnotatedString(value ?: ""),
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            ),
+            modifier = Modifier
+                .padding(top = 3.dp)
+                .clickable {
+                    // Copy text to clipboard
+                    clipboardManager.setText(AnnotatedString(value ?: ""))
+                    Toast
+                        .makeText(
+                            context,
+                            "Text copied to clipboard",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
+                }
+        )
     }
 }
