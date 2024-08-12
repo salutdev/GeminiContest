@@ -87,6 +87,7 @@ fun TaskGenerationPage(navController: NavController, drawerState: DrawerState) {
                     taskGenerationViewModel.task,
                     testCasesState.value,
                     false,
+                    false,
                     Modifier.padding(innerPadding)
                 )
             } else {

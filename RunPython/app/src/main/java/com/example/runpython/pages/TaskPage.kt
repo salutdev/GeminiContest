@@ -125,7 +125,7 @@ fun DisplayTask(navController: NavController, taskId: Int, selectedPageState: Mu
             )
         }
     ) { innerPadding ->
-        TaskDetails(taskState.value, testCasesState.value, true, Modifier.padding(innerPadding))
+        TaskDetails(taskState.value, testCasesState.value, true, true, Modifier.padding(innerPadding))
 
         if (showDialog) {
             AlertDialog(

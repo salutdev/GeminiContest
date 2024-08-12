@@ -1,5 +1,6 @@
 package com.example.runpython.pages.composibles
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -13,10 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +27,7 @@ import com.example.runpython.models.Task
 import com.example.runpython.models.TestCase
 
 @Composable
-fun TaskDetails(task: Task?, testCases: List<TestCase>?, displayTaskId: Boolean = true, modifier: Modifier = Modifier) {
+fun TaskDetails(task: Task?, testCases: List<TestCase>?, displayTaskId: Boolean, displaySolution: Boolean, modifier: Modifier = Modifier) {
 
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
@@ -68,64 +71,86 @@ fun TaskDetails(task: Task?, testCases: List<TestCase>?, displayTaskId: Boolean 
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text("Test cases", fontSize = 18.sp)
+                Text("Test cases", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-                testCases?.forEach { testCase ->
-                    Spacer(modifier = Modifier.height(10.dp))
+                DisplayTestCases(testCases, clipboardManager, context)
 
-                    Text("TestCase ${testCase?.id ?: ""}", fontSize = 16.sp)
-
-                    Row(
-                        modifier = Modifier.padding(start = 10.dp),
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Text("Input: ")
-                        BasicText(
-                            text = AnnotatedString(testCase?.input ?: ""),
-                            style = TextStyle(
-                                color = Color.Black,
-                                fontSize = 16.sp,
-                                textAlign = TextAlign.Center
-                            ),
-                            modifier = Modifier
-                                .padding(top = 3.dp)
-                                .clickable {
-                                    // Copy text to clipboard
-                                    clipboardManager.setText(AnnotatedString(testCase?.input ?: ""))
-                                    Toast.makeText(
-                                        context,
-                                        "Text copied to clipboard",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                        )
-                    }
-
-                    Row(modifier = Modifier.padding(start = 10.dp),
-                        verticalAlignment = Alignment.Top) {
-                        Text("Output: ")
-                        BasicText(
-                            text = AnnotatedString(testCase?.output  ?: ""),
-                            style = TextStyle(
-                                color = Color.Black,
-                                fontSize = 16.sp,
-                                textAlign = TextAlign.Center
-                            ),
-                            modifier = Modifier
-                                .padding(top = 3.dp)
-                                .clickable {
-                                    // Copy text to clipboard
-                                    clipboardManager.setText(AnnotatedString(testCase?.output  ?: ""))
-                                    Toast.makeText(
-                                        context,
-                                        "Text copied to clipboard",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                        )
-                    }
+                if (displaySolution && !task.solution.isNullOrEmpty()) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text("My solution", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(task.solution)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun DisplayTestCases(
+    testCases: List<TestCase>?,
+    clipboardManager: ClipboardManager,
+    context: Context
+) {
+    testCases?.forEach { testCase ->
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text("TestCase ${testCase?.id ?: ""}", fontSize = 16.sp)
+
+        Row(
+            modifier = Modifier.padding(start = 10.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Text("Input: ")
+            BasicText(
+                text = AnnotatedString(testCase?.input ?: ""),
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .padding(top = 3.dp)
+                    .clickable {
+                        // Copy text to clipboard
+                        clipboardManager.setText(AnnotatedString(testCase?.input ?: ""))
+                        Toast
+                            .makeText(
+                                context,
+                                "Text copied to clipboard",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    }
+            )
+        }
+
+        Row(
+            modifier = Modifier.padding(start = 10.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Text("Output: ")
+            BasicText(
+                text = AnnotatedString(testCase?.output ?: ""),
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .padding(top = 3.dp)
+                    .clickable {
+                        // Copy text to clipboard
+                        clipboardManager.setText(AnnotatedString(testCase?.output ?: ""))
+                        Toast
+                            .makeText(
+                                context,
+                                "Text copied to clipboard",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    }
+            )
         }
     }
 }

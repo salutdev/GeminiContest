@@ -257,7 +257,7 @@ fun InfoCard(taskState: State<Task?>, modifier: Modifier = Modifier) {
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
-        TaskDetails(taskState.value, testCasesState.value)
+        TaskDetails(taskState.value, testCasesState.value, true, false)
     }
 }
 
